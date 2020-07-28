@@ -22,7 +22,7 @@ namespace lee {
 inline namespace data_struct {
 class log_time {
  public:
-  get() {}
+  void get() {}
 
  private:
 };
@@ -33,6 +33,7 @@ class log_level {
       {"warn", 3},  {"error", 4}, {"critrial", 5},
   };  ///< <level, int>
 };
+
 class log_text {
  public:
   void set(std::string&& text) { text_ = std::move(text); }
@@ -45,11 +46,12 @@ class log_text {
 
 class log_information {
  public:
-  set(const size_t line_, const size_t thread_id,
+  bool set(const size_t line, const size_t thread_id,
       const std::string& function_name) {
     line_ = line;
     thread_id_ = thread_id;
     function_name_ = function_name;
+    return true;
   }
 
  private:
