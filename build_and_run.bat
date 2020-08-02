@@ -8,7 +8,7 @@ cmake .. -G "Visual Studio 16 2019 Win64"
 
 :: 设置路径并编译Release
 set Path=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin
-MSBuild.exe my_log.sln -p:Configuration=Release -t:Rebuild
+MSBuild.exe log_parser.sln -p:Configuration=Release -t:Rebuild
 pause
 
 :: 执行代码格式检查
