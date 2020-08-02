@@ -16,7 +16,6 @@
 
 namespace lee {
 inline namespace log_detail {
-  using ::std::string;
 /// @name     log_location
 /// @brief    用于保存记录日志位置的信息
 ///
@@ -27,6 +26,9 @@ class log_location {
  public:
   /// <In Function: main, File: main.cpp, Line: 20, PID: 15808>
   log_location(std::string str) {
+    if (str.empty()) {
+      return;
+    }
     auto begin = str.find("Function: ");
     begin = str.find(' ', begin) + 1;
     auto end = str.find(',', begin);
@@ -47,16 +49,17 @@ class log_location {
     end = str.find(',', begin);
     thread_id_ = std::stoi(str.substr(begin, end - begin));
   }
+  log_location() : log_location("") {}
 
-  const std::string get_file_name(){return file_name_;}
-  const int get_file_line(){return line_;}
-  const int get_thread_id(){return thread_id_;}
-  const std::string get_function_name(){return function_name_;}
+  const std::string get_file_name() { return file_name_; }
+  const int get_file_line() { return line_; }
+  const int get_thread_id() { return thread_id_; }
+  const std::string get_function_name() { return function_name_; }
 
  private:
-  int line_;
+  int line_ = 0;
   std::string file_name_;
-  int thread_id_;
+  int thread_id_ = 0;
   std::string function_name_;
 };
 }  // namespace log_detail
