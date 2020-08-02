@@ -1,4 +1,4 @@
-///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
+﻿///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
 /// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
 /// Use of this source code is governed by a MIT license
@@ -26,9 +26,9 @@ inline namespace log_detail {
 /// @warning  线程不安全
 class log_text {
  public:
-  log_text(std::string&& text) { text_ = std::move(text); }
-  log_text(const std::string& text) { text_ = text; }
-  const std::string& get() { return text_; }
+  log_text(std::string text) : text_(text) {}
+  log_text() : log_text("") {}
+  std::string get() { return text_; }
 
  private:
   std::string text_;
