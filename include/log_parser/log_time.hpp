@@ -1,15 +1,13 @@
-///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
 /// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
 /// Use of this source code is governed by a MIT license
 /// that can be found in the License file.
-///
+
 /// @file   log_time.hpp
 /// @brief  用于保存日志时间的数据结构
 ///
 /// @author lijiancong, pipinstall@163.com
 /// @date   2020-08-02 17:01:35
-///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
 
 #ifndef INCLUDE_LOG_PARSER_LOG_TIME_HPP_
 #define INCLUDE_LOG_PARSER_LOG_TIME_HPP_
@@ -23,7 +21,6 @@
 
 namespace lee {
 inline namespace log_detail {
-
 /// @name     log_time
 /// @brief    用于保存日志中的时间
 ///
@@ -33,24 +30,24 @@ inline namespace log_detail {
 class log_time {
  public:
   log_time(const std::string& s) {
-    get(s);
+    auto vec = set(s);
     if (s.size() != 7) {
       assert(false && "error param in log_time");
     }
-    year_ = s.at(0);
-    mouth_ = s.at(1);
-    day_ = s.at(2);
-    hour_ = s.at(3);
-    min_ = s.at(4);
-    sec_ = s.at(5);
-    millisec_ = s.at(6);
+    year_ = vec.at(0);
+    mouth_ = vec.at(1);
+    day_ = vec.at(2);
+    hour_ = vec.at(3);
+    min_ = vec.at(4);
+    sec_ = vec.at(5);
+    millisec_ = vec.at(6);
     time_stamp_ =
         get_specific_timestamp(year_, mouth_, day_, hour_, min_, sec_);
     time_stamp_millisec_ = time_stamp_ * 1000 + millisec_;
   }
 
   /// 2020-08-02 15:40:35.783 => {2020, 8, 2, 15, 40, 35, 783}
-  std::vector<int> get(const std::string& s) {
+  std::vector<int> set(const std::string& s) {
     auto date = s.substr(0, s.find_first_of(' '));
     auto date_vec = get_date(date);
 
