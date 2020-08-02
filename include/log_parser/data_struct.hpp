@@ -27,7 +27,7 @@ inline namespace data_struct {
 /// @warning  线程不安全
 class log_time {
  public:
-  get() {}
+  void get() {}
 
  private:
 };
@@ -42,6 +42,7 @@ class log_level {
   static std::unordered_map<std::string, int> log_level{
       {"trace", 0}, {"debug", 1}, {"info", 2},
       {"warn", 3},  {"error", 4}, {"critrial", 5},
+<<<<<<< HEAD
   };
 
  private:
@@ -72,11 +73,12 @@ class log_text {
 /// @warning  线程不安全
 class log_location {
  public:
-  set(const size_t line_, const size_t thread_id,
-      const std::string& function_name) {
+  bool set(const size_t line, const size_t thread_id,
+           const std::string& function_name) {
     line_ = line;
     thread_id_ = thread_id;
     function_name_ = function_name;
+    return true;
   }
 
  private:
