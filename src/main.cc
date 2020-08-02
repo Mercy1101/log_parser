@@ -4,14 +4,11 @@
 /// that can be found in the License file.
 
 #define CATCH_CONFIG_RUNNER
-#include "log_parser.hpp"
 #include <catch2/catch.hpp>
 #include <iostream>
 
 int main(int argc, char** argv) {
   Catch::Session().run(argc, argv);
-
-  lee::log_parser p;
-  p.parse("detail_log.log");
+  system("pause");
   return 0;
 }
