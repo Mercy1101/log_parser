@@ -1,4 +1,4 @@
-/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
+﻿/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
 /// Use of this source code is governed by a MIT license
 /// that can be found in the License file.
@@ -24,10 +24,9 @@ inline namespace log_detail {
 /// @date     2020-08-01 17:36:27
 /// @warning  线程不安全
 class log_level {
-  static const std::unordered_map<std::string, int> level_map{
-      {"trace", 0}, {"debug", 1}, {"info", 2},
-      {"warn", 3},  {"error", 4}, {"critrial", 5},
-  };
+  static inline const std::unordered_map<std::string, int> level_map{
+      {"trace", 0}, {"debug", 1},    {"info", 2},    {"warn", 3},
+      {"error", 4}, {"critrial", 5}, {"unknow", 100}};
 
  public:
   log_level(const std::string& level) {
@@ -49,6 +48,7 @@ class log_level {
     }
     assert(false && "error log level");
   }
+  log_level() : log_level(100) {}
 
   const int get(const std::string&) { return level_num_; }
   const std::string get(const int&) { return level_str_; }
