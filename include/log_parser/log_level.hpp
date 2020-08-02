@@ -1,15 +1,12 @@
-///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
 /// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
 /// Use of this source code is governed by a MIT license
 /// that can be found in the License file.
-///
 /// @file   log_level.hpp
 /// @brief  用于保存日志等级的数据结构
 ///
 /// @author lijiancong, pipinstall@163.com
 /// @date   2020-08-02 17:29:32
-///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
 
 #ifndef INCLUDE_LOG_PARSER_LOG_LEVEL_HPP_
 #define INCLUDE_LOG_PARSER_LOG_LEVEL_HPP_
@@ -20,7 +17,6 @@
 
 namespace lee {
 inline namespace log_detail {
-
 /// @name     log_level
 /// @brief    用于保存日志中的等级
 ///
