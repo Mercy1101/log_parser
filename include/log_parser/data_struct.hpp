@@ -1,4 +1,3 @@
-
 ///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
 /// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
@@ -20,6 +19,12 @@
 
 namespace lee {
 inline namespace data_struct {
+/// @name     log_time
+/// @brief    用于保存日志中的时间
+///
+/// @author   Lijiancong, pipinstall@163.com
+/// @date     2020-08-01 17:35:14
+/// @warning  线程不安全
 class log_time {
  public:
   get() {}
@@ -27,12 +32,28 @@ class log_time {
  private:
 };
 
+/// @name     log_level
+/// @brief    用于保存日志中的等级
+///
+/// @author   Lijiancong, pipinstall@163.com
+/// @date     2020-08-01 17:36:27
+/// @warning  线程不安全
 class log_level {
   static std::unordered_map<std::string, int> log_level{
       {"trace", 0}, {"debug", 1}, {"info", 2},
       {"warn", 3},  {"error", 4}, {"critrial", 5},
-  };  ///< <level, int>
-};
+  };
+
+ private:
+  std::string level;
+};  ///< <level, int>
+
+/// @name     log_text
+/// @brief    用于保存日志内容
+///
+/// @author   Lijiancong, pipinstall@163.com
+/// @date     2020-08-01 17:37:52
+/// @warning  线程不安全
 class log_text {
  public:
   void set(std::string&& text) { text_ = std::move(text); }
@@ -43,7 +64,13 @@ class log_text {
   std::string text_;
 };
 
-class log_information {
+/// @name     log_location
+/// @brief    用于保存记录日志位置的信息
+///
+/// @author   Lijiancong, pipinstall@163.com
+/// @date     2020-08-01 17:38:35
+/// @warning  线程不安全
+class log_location {
  public:
   set(const size_t line_, const size_t thread_id,
       const std::string& function_name) {
@@ -54,21 +81,27 @@ class log_information {
 
  private:
   size_t line_;
-  /// std::string file_name_;
+  std::string file_name_;
   size_t thread_id_;
   std::string function_name_;
 };
 
-class log_data_struct {
+/// @name     log_info
+/// @brief    用于保存解析后的单条log
+///
+/// @author   Lijiancong, pipinstall@163.com
+/// @date     2020-08-01 17:39:55
+/// @warning  线程不安全
+class log_info {
  public:
   void set() {}
-  const log_data_struct& get() {}
+  const log_info& get() {}
 
  private:
   log_time time_;
   log_level level_;
   log_text log_;
-  log_information info_;
+  log_location info_;
 };
 
 }  // namespace data_struct

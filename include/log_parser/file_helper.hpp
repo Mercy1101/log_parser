@@ -16,6 +16,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 namespace lee {
 inline namespace log {
