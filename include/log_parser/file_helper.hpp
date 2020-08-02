@@ -1,5 +1,4 @@
-﻿///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
-/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
+﻿/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
 /// Use of this source code is governed by a MIT license
 /// that can be found in the License file.
@@ -9,7 +8,6 @@
 ///
 /// @author lijiancong, pipinstall@163.com
 /// @date   2020-07-23 20:13:41
-///////// ///////// ///////// ///////// ///////// ///////// ///////// /////////
 
 #ifndef INCLUDE_FILE_HELPER_HPP_
 #define INCLUDE_FILE_HELPER_HPP_
@@ -51,5 +49,4 @@ class file_helper {
 };
 }  // namespace log
 }  // namespace lee
-
 #endif  // INCLUDE_FILE_HELPER_HPP_
