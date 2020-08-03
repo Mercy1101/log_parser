@@ -34,8 +34,8 @@ class log_info {
   log_info(const std::string& str) {
     auto begin = str.find_first_of('[');
     auto end = str.find_first_of(']');
-    log_time time(str.substr(begin, end - begin));
-    time_ = time;
+    log_time t(str.substr(begin, end - begin));
+    time_ = t;
 
     begin = str.find_first_of('[', begin);
     end = str.find_first_of(']', begin);
