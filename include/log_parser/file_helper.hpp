@@ -2,9 +2,9 @@
 ///
 /// Use of this source code is governed by a MIT license
 /// that can be found in the License file.
-///
+
 /// @file   file_helper.hpp
-/// @brief  文件辅助类
+/// @brief  文件读取辅助类
 ///
 /// @author lijiancong, pipinstall@163.com
 /// @date   2020-07-23 20:13:41
@@ -17,7 +17,7 @@
 #include <vector>
 
 namespace lee {
-inline namespace log {
+inline namespace log_detail {
 class file_helper {
  public:
   file_helper() {}
@@ -32,7 +32,7 @@ class file_helper {
   /// @author   Lijiancong, pipinstall@163.com
   /// @date     2020-07-23 19:47:54
   /// @warning  线程不安全
-  bool read(const std::string& path, std::vector<std::string>* vec) {
+  static bool read(const std::string& path, std::vector<std::string>* vec) {
     std::ifstream f(path);
     if (!f) {
       return false;
@@ -47,6 +47,6 @@ class file_helper {
     return true;
   }
 };
-}  // namespace log
+}  // namespace log_detail
 }  // namespace lee
 #endif  // INCLUDE_FILE_HELPER_HPP_
