@@ -35,5 +35,6 @@ class log_text {
 };
 
 }  // namespace log_detail
+}  // namepase lee
 
 #endif  // INCLUDE_LOG_PARSER_LOG_TEXT_HPP_
