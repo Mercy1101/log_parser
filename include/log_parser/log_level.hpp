@@ -24,7 +24,7 @@ inline namespace log_detail {
 /// @date     2020-08-01 17:36:27
 /// @warning  线程不安全
 class log_level {
-  static inline const std::unordered_map<std::string, int> level_map{
+  std::unordered_map<std::string, int> level_map{
       {"trace", 0}, {"debug", 1},    {"info", 2},    {"warn", 3},
       {"error", 4}, {"critrial", 5}, {"unknow", 100}};
 
