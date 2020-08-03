@@ -29,7 +29,12 @@ class log_level {
       {"error", 4}, {"critrial", 5}, {"unknow", 100}};
 
  public:
-  log_level(const std::string& level) {
+  log_level(std::string level) {
+    if(level.empty()){
+      return;
+    }
+    /// 擦除前后的[]符号
+    level = level.substr(1, level.size()-2);
     level_str_ = level;
     auto it = level_map.find(level);
     if (it != level_map.end()) {
@@ -50,8 +55,8 @@ class log_level {
   }
   log_level() : log_level(100) {}
 
-  const int get(const std::string&) { return level_num_; }
-  const std::string get(const int&) { return level_str_; }
+  const int get_level_num() { return level_num_; }
+  const std::string get_level_str() { return level_str_; }
 
  private:
   std::string level_str_;

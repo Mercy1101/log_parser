@@ -57,10 +57,10 @@ class log_location {
   const std::string get_function_name() { return function_name_; }
 
  private:
-  int line_ = 0;
-  std::string file_name_;
-  int thread_id_ = 0;
   std::string function_name_;
+  std::string file_name_;
+  int line_ = 0;
+  int thread_id_ = 0;
 };
 }  // namespace log_detail
 }  // namespace lee

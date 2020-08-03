@@ -26,7 +26,11 @@ inline namespace log_detail {
 /// @warning  线程不安全
 class log_text {
  public:
-  log_text(std::string text) : text_(text) {}
+  log_text(const std::string& text) : text_(text) {
+    /// 擦除行首行尾的空格
+    text_.erase(0, text_.find_first_not_of(' '));
+    text_.erase(text_.find_last_not_of(' ') + 1);
+  }
   log_text() : log_text("") {}
   std::string get() { return text_; }
 
@@ -35,6 +39,6 @@ class log_text {
 };
 
 }  // namespace log_detail
-}  // namepase lee
+}  // namespace lee
 
 #endif  // INCLUDE_LOG_PARSER_LOG_TEXT_HPP_
