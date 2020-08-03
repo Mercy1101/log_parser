@@ -4,7 +4,7 @@
 /// that can be found in the License file.
 
 #include "log_parser/log_info.hpp"
-
+#include <string>
 #include <catch2/catch.hpp>
 
 TEST_CASE("log_info construct test", "[my_log][log_info]") {
