@@ -13,6 +13,7 @@
 #define INCLUDE_LOG_PARSER_LOG_INFO_HPP_
 
 #include <string>
+#include <tuple>
 
 #include "log_parser/log_level.hpp"
 #include "log_parser/log_location.hpp"
@@ -34,21 +35,43 @@ class log_info {
   log_info(const std::string& str) {
     auto begin = str.find_first_of('[');
     auto end = str.find_first_of(']');
-    log_time t(str.substr(begin, end - begin));
+    log_time t(str.substr(begin, end - begin + 1));
     time_ = t;
 
-    begin = str.find_first_of('[', begin);
+    begin = str.find_first_of('[', end + 1);
     end = str.find_first_of(']', begin);
-    log_level level(str.substr(begin, end - begin));
+    log_level level(str.substr(begin, end - begin + 1));
     level_ = level;
 
-    end = str.find_first_of('<', begin);
+    begin = end + 1;
+    end = str.find_first_of('<', end + 1);
     log_text text(str.substr(begin, end - begin));
     text_ = text;
 
     begin = end + 1;
     log_location location(str.substr(begin));
     location_ = location;
+  }
+
+  time_t get_time_milli_sec() { return time_.get_time_stamp_millisec(); }
+
+  std::string get_level() { return level_.get_level_str(); }
+
+  std::string get_log() { return text_.get(); }
+
+  enum LOCATION {
+    FUNC = 0,
+    FILE = 1,
+    LINE = 2,
+    PID = 3,
+  };
+  using location_tuple = std::tuple<std::string, std::string, int, int>;
+  location_tuple get_location() {
+    auto func = location_.get_function_name();
+    auto file = location_.get_file_name();
+    auto line = location_.get_file_line();
+    auto pid = location_.get_thread_id();
+    return std::make_tuple(func, file, line, pid);
   }
 
  private:

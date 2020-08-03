@@ -12,5 +12,9 @@ TEST_CASE("log_info construct test", "[my_log][log_info]") {
       "[2020-07-22 20:43:36.931] [trace] trace 15 <In Function: main, File: "
       "main.cc, Line: 20, PID: 15808>");
   lee::log_info temp(str);
-  (void)temp;
+  REQUIRE(temp.get_level() == "trace");
+  REQUIRE(temp.get_time_milli_sec() == 1595421816931);
+  REQUIRE(temp.get_log() == "trace 15");
+  auto tuple = std::make_tuple("main", "main.cc", 20, 15808);
+  REQUIRE(temp.get_location() == tuple);
 }
