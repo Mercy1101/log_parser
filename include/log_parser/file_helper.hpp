@@ -46,6 +46,23 @@ class file_helper {
 
     return true;
   }
+
+  /// @name     filter
+  /// @brief    用于过滤无效的日志
+  ///
+  /// @param    vec  [out]
+  ///
+  /// @return   NONE
+  ///
+  /// @author   lijiancong, pipinstall@163.com
+  /// @date     2020-08-04 08:18:09
+  /// @warning  线程不安全
+  static void filter(std::vector<std::string>* vec)
+  {
+    //// [2020-08-04 08:21:25.373] [debug] panel_in_meeting is ctor(0x555557b96290)! <In Function: panel_in_meeting, File: panel_in_meeting.cpp, Line: 9, PID: 140737257637888>
+    /// 正则匹配 \[.*\].*\[.*\].*<.*>[*]*[*]*<*>
+    
+  }
 };
 }  // namespace log_detail
 }  // namespace lee
