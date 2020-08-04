@@ -35,7 +35,8 @@ class log_parser {
   /// @warning  线程不安全
   bool parse(const std::string& file) {
     /// 读取文件所有内容
-    file_helper_.read(file, &file_data_);
+    lee::file_helper_::read(file, &file_data_);
+    lee::file_helper_::filter(&file_data_);
     /// 解析器来解析这个vector
     /// parser_.parse();
     return true;
