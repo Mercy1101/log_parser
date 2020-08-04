@@ -53,7 +53,12 @@ TEST_CASE("file_helper简单测试", "[log_parser][file_helper]") {
                                "[2020-07-22 20:43:40.976] [error] error 606 "
                                "<In Function: main, Line: 32, PID: 15808>",
                                "[2020-07-22 20:43:46.199] [critical] critical "
-                               "442 <In Function: main, Line: 35, PID: 15808>",
+                               "442 <In Function: main, Line: 3",
                                ""};
+  REQUIRE(vec == res);
+  lee::file_helper::filter(&vec);
+  res.erase(res.begin());
+  res.erase(std::prev(res.end()));
+  res.erase(std::prev(res.end()));
   REQUIRE(vec == res);
 }

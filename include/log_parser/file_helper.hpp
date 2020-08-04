@@ -14,6 +14,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <vector>
 
 namespace lee {
@@ -57,11 +58,14 @@ class file_helper {
   /// @author   lijiancong, pipinstall@163.com
   /// @date     2020-08-04 08:18:09
   /// @warning  线程不安全
-  static void filter(std::vector<std::string>* vec)
-  {
-    //// [2020-08-04 08:21:25.373] [debug] panel_in_meeting is ctor(0x555557b96290)! <In Function: panel_in_meeting, File: panel_in_meeting.cpp, Line: 9, PID: 140737257637888>
-    /// 正则匹配 \[.*\].*\[.*\].*<.*>[*]*[*]*<*>
-    
+  static void filter(std::vector<std::string>* vec) {
+    /// 正则匹配 \[.*\].*\[.*\].*<.*>
+    std::regex e("\\[.*\\].*\\[.*\\].*<.*>");
+    vec->erase(std::remove_if(vec->begin(), vec->end(),
+                              [&](const std::string& it) {
+                                return !std::regex_match(it, e);
+                              }),
+               vec->end());
   }
 };
 }  // namespace log_detail

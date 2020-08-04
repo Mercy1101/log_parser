@@ -4,4 +4,4 @@
 [2020-07-22 20:43:44.354] [info] info 688 <In Function: main, Line: 26, PID: 15808>
 [2020-07-22 20:43:48.747] [warn] warn 379 <In Function: main, Line: 29, PID: 15808>
 [2020-07-22 20:43:40.976] [error] error 606 <In Function: main, Line: 32, PID: 15808>
-[2020-07-22 20:43:46.199] [critical] critical 442 <In Function: main, Line: 35, PID: 15808>
+[2020-07-22 20:43:46.199] [critical] critical 442 <In Function: main, Line: 3
