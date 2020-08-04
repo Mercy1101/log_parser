@@ -70,15 +70,15 @@ class log_time {
 
     return res;
   }
-  int get_year() { return year_; }
-  int get_mouth() { return mouth_; }
-  int get_day() { return day_; }
-  int get_hour() { return hour_; }
-  int get_min() { return min_; }
-  int get_sec() { return sec_; }
-  int get_millisec() { return millisec_; }
-  time_t get_time_stamp() { return time_stamp_; }
-  time_t get_time_stamp_millisec() { return time_stamp_millisec_; }
+  int get_year() const { return year_; }
+  int get_mouth() const { return mouth_; }
+  int get_day() const { return day_; }
+  int get_hour() const { return hour_; }
+  int get_min() const { return min_; }
+  int get_sec() const { return sec_; }
+  int get_millisec() const { return millisec_; }
+  time_t get_time_stamp() const { return time_stamp_; }
+  time_t get_time_stamp_millisec() const { return time_stamp_millisec_; }
 
  private:
   int year_ = 0;

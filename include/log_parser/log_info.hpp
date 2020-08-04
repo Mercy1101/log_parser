@@ -53,11 +53,11 @@ class log_info {
     location_ = location;
   }
 
-  time_t get_time_milli_sec() { return time_.get_time_stamp_millisec(); }
+  time_t get_time_milli_sec() const { return time_.get_time_stamp_millisec(); }
 
-  std::string get_level() { return level_.get_level_str(); }
+  std::string get_level() const { return level_.get_level_str(); }
 
-  std::string get_log() { return text_.get(); }
+  std::string get_log() const { return text_.get(); }
 
   enum LOCATION {
     FUNC = 0,
@@ -74,6 +74,9 @@ class log_info {
     return std::make_tuple(func, file, line, pid);
   }
 
+  bool operator<(const log_info& lhs) const {
+    return get_time_milli_sec() < lhs.get_time_milli_sec();
+  }
  private:
   log_time time_;
   log_level level_;

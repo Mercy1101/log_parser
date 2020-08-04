@@ -32,7 +32,7 @@ class log_text {
     text_.erase(text_.find_last_not_of(' ') + 1);
   }
   log_text() : log_text("") {}
-  std::string get() { return text_; }
+  std::string get() const { return text_; }
 
  private:
   std::string text_;

@@ -56,7 +56,7 @@ class log_level {
   log_level() : log_level(100) {}
 
   const int get_level_num() { return level_num_; }
-  const std::string get_level_str() { return level_str_; }
+  const std::string get_level_str() const { return level_str_; }
 
  private:
   std::string level_str_;
