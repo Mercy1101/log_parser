@@ -29,7 +29,8 @@ class log_filter_base {
   virtual ~log_filter() = default;
 
   virtual bool set_condition(const SORT_KINDS sort, const cond_vec& vec) = 0;
-  bool set_condition(const cond_vec& vec, const SORT_KINDS sort = SORT_KINDS::TIME) {
+  bool set_condition(const cond_vec& vec,
+                     const SORT_KINDS sort = SORT_KINDS::TIME) {
     set_sort_cond(sort);
     if (vec.empty()) {
       return false;
@@ -38,13 +39,21 @@ class log_filter_base {
     condition_ = vec;
     return true;
   }
-  virtual bool filter(log_view_vec* vec) = 0;
-  bool find_keyword(const std::string& key_word, const std::string& log) {
+  virtual void filter(log_view_vec* vec) = 0;
+  std::optional<highlight_pos> find_keyword(const std::string& key_word,
+                                            const std::string& log) {
     if (log.find(key_word) != std::string::npos) {
-      return true;
+      return cal_highlight_pos(key_word, log);
     } else {
-      return false;
+      return {};
     }
+  }
+
+  highlight_pos cal_highlight_pos(const std::string& key_word,
+                                  const std::string& log) {
+    size_t begin = log.find(key_word);
+    size_t end = begin + key_word.size();
+    return std::make_pair(begin, end);
   }
 
  private:
@@ -63,9 +72,11 @@ class log_filter_single : log_filter_base {
  public:
   log_filter_single() = default;
 
-  bool filter(log_view_vec* vec) override {
+  void filter(log_view_vec* vec) override {
     for (auto& it : *vec) {
-      if (find_keyword(condition_.at(0), it.first.get_log()) {
+      auto pos = find_keyword(condition_.at(0), it.first.get_log());
+      if (pos) {
+        it.second.hight_pos = pos.value();
         it.second.state = condition_;
       }
     }
@@ -76,10 +87,12 @@ class log_filter_multi_cond : log_filter_base {
  public:
   log_filter_multi_cond() = default;
 
-  bool filter(log_view_vec* vec) override {
+  void filter(log_view_vec* vec) override {
     for (auto& it : *vec) {
       for (auto& it_cond : condition_) {
-        if (find_keyword(it_cond, it.first.get_log()) {
+        auto pos = find_keyword(it_cond, it.first.get_log());
+        if (pos) {
+          it.second.hight_pos = pos.value();
           it.second.state = it_cond;
         }
       }

@@ -12,7 +12,7 @@
 #ifndef INCLUDE_DATA_STRUCT_DEFINE_HPP_
 #define INCLUDE_DATA_STRUCT_DEFINE_HPP_
 
-#include <pair>
+#include <utility>
 #include <vector>
 
 namespace lee {
@@ -31,12 +31,14 @@ enum VISABLE_STATE : int {
   HIGHLIGHT = 3,  ///< 高亮状态
 };
 
-///< 用于存放过滤条件的vector
+/// 用于存放过滤条件的vector
 using cond = std::pair<std::string, VISABLE_STATE>;
 using cond_vec = std::vector<cond>;
-
+/// 用于保存高亮文本的坐标
+using highlight_pos = std::pair<size_t, size_t>;
 struct log_info_state {
   VISABLE_STATE state = VISABLE_STATE::DEFAULT;
+  highlight_pos pos{0, 0};
 };
 
 using log_view = std::pair<std::reference_wrapper<log_info>, log_info_state>;
@@ -45,6 +47,7 @@ using log_view_vec = std::vector<log_view>;
 enum SORT_KINDS : int {
   TIME,   ///< 以时间顺序排序
   INDEX,  ///< 以日志出现顺序排序
+  LEVEL,  ///< 以日志等级顺序排序
 }
 }  // namespace data_struct
 }  // namespace lee
