@@ -30,6 +30,7 @@ class log_text {
     /// 擦除行首行尾的空格
     text_.erase(0, text_.find_first_not_of(' '));
     text_.erase(text_.find_last_not_of(' ') + 1);
+    text_view_ = text;
   }
   log_text() : log_text("") {}
   std::string get() const { return text_; }

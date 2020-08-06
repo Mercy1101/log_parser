@@ -17,14 +17,21 @@
 #include <string>
 #include <vector>
 
+#include "log_parser/data_struct_define.hpp"
 #include "log_parser/file_helper.hpp"
 #include "log_parser/log_info.hpp"
+#include "log_parser/log_filter.hpp"
 
 namespace lee {
 inline namespace log {
 class log_parser {
  public:
-  log_parser(const std::string& file_path) { parse(file_path); }
+ public:
+  log_parser(const std::string& file_path) {
+    if (!parse(file_path)) {
+      assert(false && "read file failed!");
+    }
+  }
 
   /// @name     parse
   /// @brief    解析文件
@@ -38,34 +45,25 @@ class log_parser {
   /// @warning  线程不安全
   bool parse(const std::string& file) {
     /// 读取文件所有内容
-    if (lee::file_helper_::read(file, &file_data_)) {
+    if (lee::file_helper::read(file, &file_data_)) {
       assert(false && "cannot open the file");
       return false;
     }
 
-    lee::file_helper_::filter(&file_data_);
-    /// log_view.insert(log_view.end(), file_data_.begin(), file_data_.end());
-    log_view_.reserve(file_data_.size());
+    lee::file_helper::filter(&file_data_);
+    log_info_.reserve(file_data_.size());
+    int count = 0;
     for (const auto& it : file_data_) {
       log_info info(it);
-      log_view_.push_back(it);
+      log_info_state state;
+      log_info_.push_back(it, count);
+      log_view_.push_back(
+          std::make_pair(std::cref(log_info_.back()), state)));
+      count++;
     }
-    std::sort(log_view_.begin(), log_view_.end());
+    /// std::sort(log_view_.begin(), log_view.end());
     return true;
   }
-
-  /// @name     STATE
-  /// @brief    用于记录日志可不可见
-  ///
-  /// @author   Lijiancong, pipinstall@163.com
-  /// @date     2020-08-04 20:01:40
-  /// @warning  线程不安全
-  enum STATE : int {
-    HIDDEN = 0,     ///< 隐藏状态
-    DEFAULT = 1,    ///< 默认状态
-    VISABLE = 2,    ///< 可见状态
-    HIGHLIGHT = 3,  ///< 高亮状态
-  };
 
   /// @name     find
   /// @brief    返回大于该等级的日志内容
@@ -77,57 +75,15 @@ class log_parser {
   /// @author   Lijiancong, pipinstall@163.com
   /// @date     2020-07-23 19:13:51
   /// @warning  线程不安全
-  std::vector<log_info> find(STATE state = VISABLE) {
-    std::vector<log_info> ret;
-    for (auto& it : log_view_) {
-      if (it.second > state) {
-        ret.push_back(it.first);
-      }
-    }
-    return ret;
+  std::vector<log_info> find(cond_vec& condition_vec) {
+    return filter(&log_view);
   }
 
  private:
-  lee::file_helper file_helper_;  ///< 文件帮助类，用于读取文件
   std::vector<std::string> file_data_;  ///< 用于存放文件内容
-  std::vector<std::pair<log_info, STATE>> log_view_;  ///< 保存日志的数据结构
-  std::multi_map<STATE, std::string> condition_;  ///< 用于显示日志的关键字
-
-  /// @name     add_condition
-  /// @brief    用于添加各种状态的优先级
-  /// @details  该条件的优先级比
-  ///
-  /// @param    key_word  [in]  关键字
-  ///
-  /// @return   NONE
-  ///
-  /// @author   Lijiancong, pipinstall@163.com
-  /// @date     2020-08-04 20:06:01
-  /// @warning  线程不安全
-  void add_condition(const std::string& key_word, const STATE state) {
-    condition_[state] = key_word;
-    refresh_all_state();
-  }
-  void mark(const STATE state, const std::string& key_word) {
-    for (auto& it : log_view_) {
-      if (it.first.get_log().find(key_word) != std::string::npos) {
-        it.second = state;
-      }
-    }
-  }
-
-  void refresh_all_state() {
-    for (const auto& it : condition_) {
-      mark(it.first, it.second);
-    }
-  }
-
-  void clean_all_condition() {
-    condition_.clear();
-    for (auto& it : log_view_) {
-      it.second = STATE::DEFAULT;
-    }
-  }
+  std::vector<log_info> log_info_;  ///< 用于存放解析好的日志内容
+  log_view_vec log_view_;           ///< 用于存放日志内容的引用
+  lee::log_filter filter_;
 };
 }  // namespace log
 }  // namespace lee
