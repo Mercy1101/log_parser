@@ -14,9 +14,16 @@
 
 #include <utility>
 #include <vector>
+#include <string>
 
 namespace lee {
 inline namespace data_struct {
+// folder separator
+#ifdef _WIN32
+static const char folder_sep = '\\';
+#else
+constexpr static const char folder_sep = '/';
+#endif
 class log_info;
 /// @name     VISABLE_STATE
 /// @brief    用于记录日志可不可见
@@ -44,11 +51,12 @@ struct log_info_state {
 using log_view = std::pair<std::reference_wrapper<log_info>, log_info_state>;
 using log_view_vec = std::vector<log_view>;
 
+/* 用于日志的排序 */
 enum SORT_KINDS : int {
   TIME,   ///< 以时间顺序排序
   INDEX,  ///< 以日志出现顺序排序
   LEVEL,  ///< 以日志等级顺序排序
-}
+};
 }  // namespace data_struct
 }  // namespace lee
 

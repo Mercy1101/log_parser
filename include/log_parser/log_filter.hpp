@@ -57,8 +57,8 @@ class log_filter_base {
   }
 
  private:
-  SORT_KINDS sort_cond_;  ///< 用于保存排序的规则
-  cond_vec condition_;
+  lee::SORT_KINDS sort_cond_;  ///< 用于保存排序的规则
+  lee::cond_vec condition_;
   void set_sort_cond(const SORT_KINDS cond) { sort_cond_ = sort; }
 };
 

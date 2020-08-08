@@ -14,6 +14,8 @@
 #ifndef INCLUDE_LOG_PARSER_LOG_TEXT_HPP_
 #define INCLUDE_LOG_PARSER_LOG_TEXT_HPP_
 
+#include <algorithm>
+#include <locale>
 #include <string>
 
 namespace lee {
@@ -31,9 +33,10 @@ class log_text {
     text_.erase(0, text_.find_first_not_of(' '));
     text_.erase(text_.find_last_not_of(' ') + 1);
     if (text_.size() != 0) {
-      lowwercase_text_ = text_;
-      lowwercase_text_ = std::tolowwer(
-          &lowwercase_text_[0], &lowwercase_text_[0] + lowwercase_text_.size());
+      lowercase_text_ = text_;
+      std::transform(lowercase_text_.cbegin(), lowercase_text_.cend(),
+                     lowercase_text_.begin(),
+                     [](const char& c) -> char { return static_cast<char>(std::tolower(static_cast<int>(c))); });
     }
   }
   log_text() : log_text("") {}
@@ -41,7 +44,7 @@ class log_text {
 
  private:
   std::string text_;
-  std::string lowwercase_text_;
+  std::string lowercase_text_;
 };
 
 }  // namespace log_detail
