@@ -16,7 +16,6 @@
 #include <utility>
 #include <vector>
 
-
 namespace lee {
 inline namespace log_detail {
 // folder separator
@@ -26,7 +25,6 @@ static const char folder_sep = '/';
 constexpr static const char folder_sep = '/';
 #endif
 
-class log_info;
 
 /// @name     VISABLE_STATE
 /// @brief    用于记录日志可不可见
@@ -47,12 +45,12 @@ using cond_vec = std::vector<cond>;
 /// 用于保存高亮文本的坐标
 using highlight_pos = std::pair<size_t, size_t>;
 struct log_info_state {
+  log_info_state(const int count):count_(count){}
+  int count_ = 0;
   VISABLE_STATE state = VISABLE_STATE::DEFAULT;
   highlight_pos pos{0, 0};
 };
 
-using log_view = std::pair<std::reference_wrapper<log_info>, log_info_state>;
-using log_view_vec = std::vector<log_view>;
 
 /* 用于日志的排序 */
 enum SORT_KINDS : int {

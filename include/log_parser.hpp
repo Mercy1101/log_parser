@@ -12,10 +12,12 @@
 #ifndef INCLUDE_LOG_PARSER_HPP_
 #define INCLUDE_LOG_PARSER_HPP_
 
-#include <funtional>
+#include <functional>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
+#include <optional>
 
 #include "log_parser/data_struct_define.hpp"
 #include "log_parser/file_helper.hpp"
@@ -27,13 +29,18 @@ namespace lee {
 inline namespace log {
 class log_parser {
  public:
- public:
   log_parser(const std::string& file_path) {
     if (!parse(file_path)) {
       assert(false && "read file failed!");
     }
+    filter_ = new lee::log_filter_multi();
   }
 
+  ~log_parser(){
+    if(filter_){
+      delete filter_;
+    }
+  }
   /// @name     parse
   /// @brief    解析文件
   ///
@@ -46,7 +53,7 @@ class log_parser {
   /// @warning  线程不安全
   bool parse(const std::string& file) {
     /// 读取文件所有内容
-    if (lee::file_helper::read(file, &file_data_)) {
+    if (!lee::file_helper::read(file, &file_data_)) {
       assert(false && "cannot open the file");
       return false;
     }
@@ -56,16 +63,14 @@ class log_parser {
     int count = 0;
     for (const auto& it : file_data_) {
       log_info info(it);
-      log_info_state state;
-      log_info_.push_back(it, count);
-      log_view_.push_back(
-          std::make_pair(std::cref(log_info_.back()), state)));
+      log_info_state state(count);
+      log_info_.push_back(it);
+      log_view_.emplace_back(
+          std::make_pair(std::ref(log_info_.back()), state));
       count++;
     }
-    /// std::sort(log_view_.begin(), log_view.end());
     return true;
   }
-
   log_view_vec& get_log_view_vec() { return log_view_; }
 
   /// @name     find
@@ -78,15 +83,17 @@ class log_parser {
   /// @author   Lijiancong, pipinstall@163.com
   /// @date     2020-07-23 19:13:51
   /// @warning  线程不安全
-  std::vector<log_info> find(cond_vec& condition_vec) {
-    return filter(&log_view);
+  log_view_vec find(cond_vec& condition_vec) {
+    filter_->set_condition( condition_vec);
+    filter_->filter(log_view_);
+    return log_view_;
   }
 
  private:
   std::vector<std::string> file_data_;  ///< 用于存放文件内容
   std::vector<log_info> log_info_;  ///< 用于存放解析好的日志内容
   log_view_vec log_view_;           ///< 用于存放日志内容的引用
-  lee::log_filter filter_;
+  log_filter_base* filter_ = nullptr;
 };
 }  // namespace log
 }  // namespace lee

@@ -23,25 +23,35 @@ class condition_parser {
  public:
   /// +error, -info, *[regex], +\+, -\-, +\*,
   ///"+error", "-info", "*[regex]", "+\\+",
-  static cond_vec parser(std::string raw_condition) {
-    raw_condition = replace_backslash(raw_condition);
-    raw_condition = strip_space(raw_condition);
+  cond_vec parser(std::string raw_condition) {
+    replace_backslash(raw_condition);
+    strip_space(raw_condition);
     std::vector<std::string> vec;
-    vec = splice_by_string(raw_condition, ",");
+    vec = split(raw_condition, ",");
+    cond_vec cond;
+    for (auto& it : vec) {
+      if (parse(it)) {
+        it = it.substr(1);  ///< 去除开头的符号
+        cond.push_back({it, lee::VISABLE_STATE::VISABLE});
+      } else {
+        cond.push_back({it, lee::VISABLE_STATE::HIDDEN});
+      }
+    }
+    return cond;
   }
 
  private:
-  void replace_backslash(string& raw_condition) {
+  void replace_backslash(std::string& raw_condition) {
     /// TODO(lijiancong): 目前还不确定获取到的字符串读取时能否读取到两个反斜杠
   }
-  static void strip_space(string& raw_condition) {
+  void strip_space(std::string& raw_condition) {
     auto begin = raw_condition.find_first_not_of(' ');
     auto end = raw_condition.find_last_not_of(' ');
     raw_condition = raw_condition.substr(begin, end);
   }
 
-  static std::vector<std::string> split(const string& raw_condition,
-                                        const std::string& token = ",") {
+  std::vector<std::string> split(const std::string& raw_condition,
+                                 const std::string& token = ",") {
     using size = std::string::size_type;
     std::vector<std::string> vec;
     size begin = raw_condition.find_first_not_of(token, 0);
@@ -51,7 +61,11 @@ class condition_parser {
       end = raw_condition.find_first_not_of(token, begin);
       begin = raw_condition.find_first_of(token, end);
     }
-  };
+    return vec;
+  }
+
+  bool parse(const std::string& str) { return true; }
+};
 }  // namespace condition_detail
-}  // namespace condition_detail
+}  // namespace lee
 #endif  // INCLUDE_CONDITION_PARSER_HPP_

@@ -21,6 +21,7 @@ namespace lee {
 inline namespace log_detail {
 class file_helper {
  public:
+
   file_helper() {}
   /// @name     read
   /// @brief    读取文件中的内容到容器中

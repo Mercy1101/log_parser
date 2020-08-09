@@ -74,6 +74,7 @@ endif(MSVC)
 # 设置GCC最高警告级别
 if ( CMAKE_COMPILER_IS_GNUCC )
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++2aA")
 endif()
 # 设置MSVC最高警告级别
 if ( MSVC )
@@ -81,3 +82,5 @@ if ( MSVC )
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /WX") # 设置警告视为错误
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++latest") # 设置使用最新C++标准
 endif()
+
+set(CMAKE_CXX_STANDARD 20)

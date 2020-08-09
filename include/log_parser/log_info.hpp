@@ -54,6 +54,7 @@ class log_info {
   }
 
   time_t get_time_milli_sec() const { return time_.get_time_stamp_millisec(); }
+  std::string get_time_str() const { return time_.get_time_str(); }
 
   std::string get_level() const { return level_.get_level_str(); }
 

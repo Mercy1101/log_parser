@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+CONFIG += C++17
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = log_parser
@@ -34,3 +34,4 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
+

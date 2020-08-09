@@ -6,16 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1304</width>
-    <height>806</height>
+    <width>800</width>
+    <height>450</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>16</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QFormLayout" name="formLayout">
-    <item row="0" column="0">
+    <item row="0" column="0" colspan="2">
      <widget class="QTableWidget" name="tableWidget"/>
     </item>
    </layout>
@@ -25,8 +31,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1304</width>
-     <height>22</height>
+     <width>800</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>

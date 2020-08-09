@@ -33,6 +33,7 @@ class log_time {
       return;
     }
     s = s.substr(1, s.size() - 2);
+    time_str_ = s;
     auto vec = set(s);
     if (vec.size() != 7) {
       assert(false && "error param in log_time");
@@ -79,6 +80,7 @@ class log_time {
   int get_millisec() const { return millisec_; }
   time_t get_time_stamp() const { return time_stamp_; }
   time_t get_time_stamp_millisec() const { return time_stamp_millisec_; }
+  std::string get_time_str() const { return time_str_; }
 
  private:
   int year_ = 0;
@@ -90,6 +92,7 @@ class log_time {
   int millisec_ = 0;
   time_t time_stamp_ = 0;
   time_t time_stamp_millisec_ = 0;
+  std::string time_str_;
 
   std::vector<int> get_date(const std::string& date) {
     size_t begin = 0;
