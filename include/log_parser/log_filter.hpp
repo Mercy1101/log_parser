@@ -1,4 +1,4 @@
-/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
+﻿/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
 /// Use of this source code is governed by a MIT license
 /// that can be found in the License file.
@@ -11,6 +11,8 @@
 
 #ifndef INCLUDE_LOG_FILTER_HPP_
 #define INCLUDE_LOG_FILTER_HPP_
+
+#include <optional>
 
 #include "log_parser/data_struct_define.hpp"
 #include "log_parser/log_info.hpp"
@@ -25,10 +27,10 @@ inline namespace log_detail {
 /// @warning  线程不安全
 class log_filter_base {
  public:
-  log_filter() = default;
-  virtual ~log_filter() = default;
+  log_filter_base(log_view_vec& vec) : vec_(vec){};
+  virtual ~log_filter_base() = default;
 
-  virtual bool set_condition(const SORT_KINDS sort, const cond_vec& vec) = 0;
+  virtual void filter() = 0;
   bool set_condition(const cond_vec& vec,
                      const SORT_KINDS sort = SORT_KINDS::TIME) {
     set_sort_cond(sort);
@@ -39,7 +41,6 @@ class log_filter_base {
     condition_ = vec;
     return true;
   }
-  virtual void filter(log_view_vec* vec) = 0;
   std::optional<highlight_pos> find_keyword(const std::string& key_word,
                                             const std::string& log) {
     if (log.find(key_word) != std::string::npos) {
@@ -56,10 +57,11 @@ class log_filter_base {
     return std::make_pair(begin, end);
   }
 
- private:
+ protected:
+  log_view_vec& vec_;
   lee::SORT_KINDS sort_cond_;  ///< 用于保存排序的规则
   lee::cond_vec condition_;
-  void set_sort_cond(const SORT_KINDS cond) { sort_cond_ = sort; }
+  void set_sort_cond(const SORT_KINDS sort) { sort_cond_ = sort; }
 };
 
 /// @name     log_filter_single
@@ -68,32 +70,37 @@ class log_filter_base {
 /// @author   lijiancong, pipinstall@163.com
 /// @date     2020-08-05 12:19:31
 /// @warning  线程不安全
-class log_filter_single : log_filter_base {
+class log_filter_single : public log_filter_base {
  public:
   log_filter_single() = default;
 
-  void filter(log_view_vec* vec) override {
-    for (auto& it : *vec) {
-      auto pos = find_keyword(condition_.at(0), it.first.get_log());
+  void filter() override {
+    auto sort = [](const log_view& lhs, const log_view& rhs) -> bool {
+      return lhs.first.get() < rhs.first.get();
+    };
+    std::stable_sort(vec_.begin(), vec_.end(), sort);
+
+    for (auto& it : vec_) {
+      auto pos = find_keyword(condition_.at(0).first, it.first.get().get_log());
       if (pos) {
-        it.second.hight_pos = pos.value();
-        it.second.state = condition_;
+        it.second.pos = pos.value();
+        it.second.state = condition_.at(0).second;
       }
     }
   }
 };
 
-class log_filter_multi_cond : log_filter_base {
+class log_filter_multi : public log_filter_base {
  public:
-  log_filter_multi_cond() = default;
+  log_filter_multi() = default;
 
-  void filter(log_view_vec* vec) override {
-    for (auto& it : *vec) {
+  void filter() override {
+    for (auto& it : vec_) {
       for (auto& it_cond : condition_) {
-        auto pos = find_keyword(it_cond, it.first.get_log());
+        auto pos = find_keyword(it_cond.first, it.first.get().get_log());
         if (pos) {
-          it.second.hight_pos = pos.value();
-          it.second.state = it_cond;
+          it.second.pos = pos.value();
+          it.second.state = it_cond.second;
         }
       }
     }

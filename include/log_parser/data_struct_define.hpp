@@ -1,4 +1,4 @@
-/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
+﻿/// Copyright (c) 2019,2020 Lijiancong. All rights reserved.
 ///
 /// Use of this source code is governed by a MIT license
 /// that can be found in the License file.
@@ -12,19 +12,22 @@
 #ifndef INCLUDE_DATA_STRUCT_DEFINE_HPP_
 #define INCLUDE_DATA_STRUCT_DEFINE_HPP_
 
+#include <string>
 #include <utility>
 #include <vector>
-#include <string>
+
 
 namespace lee {
-inline namespace data_struct {
+inline namespace log_detail {
 // folder separator
 #ifdef _WIN32
-static const char folder_sep = '\\';
+static const char folder_sep = '/';
 #else
 constexpr static const char folder_sep = '/';
 #endif
+
 class log_info;
+
 /// @name     VISABLE_STATE
 /// @brief    用于记录日志可不可见
 ///

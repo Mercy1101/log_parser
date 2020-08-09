@@ -19,8 +19,9 @@
 
 #include "log_parser/data_struct_define.hpp"
 #include "log_parser/file_helper.hpp"
-#include "log_parser/log_info.hpp"
 #include "log_parser/log_filter.hpp"
+#include "log_parser/log_info.hpp"
+
 
 namespace lee {
 inline namespace log {
@@ -64,6 +65,8 @@ class log_parser {
     /// std::sort(log_view_.begin(), log_view.end());
     return true;
   }
+
+  log_view_vec& get_log_view_vec() { return log_view_; }
 
   /// @name     find
   /// @brief    返回大于该等级的日志内容
