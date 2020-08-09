@@ -3,5 +3,6 @@ bin/
 build/
 tools/reports/
 ui/build-log_parser-Desktop_Qt_5_10_0_MinGW_32bit-Debug
+ui/build-log_parser-Desktop_Qt_5_15_0_GCC_64bit-Debug
 *.user
 *.autosave
