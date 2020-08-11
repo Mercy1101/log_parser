@@ -47,20 +47,24 @@ class log_location {
     begin = str.find("PID: ");
     begin = str.find(' ', begin) + 1;
     end = str.find(',', begin);
-    thread_id_ = std::stoi(str.substr(begin, end - begin));
+    if(std::string::npos == end){
+        end = str.find('>', begin);
+    }
+    auto temp = str.substr(begin, end - begin);
+    thread_id_ = std::stoull(temp);
   }
   log_location() : log_location("") {}
 
   const std::string get_file_name() { return file_name_; }
   const int get_file_line() { return line_; }
-  const int get_thread_id() { return thread_id_; }
+  const unsigned long long get_thread_id() { return thread_id_; }
   const std::string get_function_name() { return function_name_; }
 
  private:
   std::string function_name_;
   std::string file_name_;
   int line_ = 0;
-  int thread_id_ = 0;
+  unsigned long long thread_id_ = 0;
 };
 }  // namespace log_detail
 }  // namespace lee

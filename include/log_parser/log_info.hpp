@@ -66,7 +66,7 @@ class log_info {
     LINE = 2,
     PID = 3,
   };
-  using location_tuple = std::tuple<std::string, std::string, int, int>;
+  using location_tuple = std::tuple<std::string, std::string, int, unsigned long long>;
   location_tuple get_location() {
     auto func = location_.get_function_name();
     auto file = location_.get_file_name();

@@ -30,30 +30,13 @@ void MainWindow::create_menu() {
   // 创建子菜单，第一个参数QIcon为添加图标，注意路径是否正确，第二个参数是子菜单的显示文本
   QAction *act1 = new QAction(tr("Open File"), this);
 
-  // 创建快捷方式：Ctrl+N，如果想自定义快捷键，可以设置为act->setShortcut(QKeySequence(Qt::CTRL
-  // + Qt::Key_N));
-  /// act1->setShortcuts(QKeySequence::New);
-  act1->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+  act1->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
 
   // 子菜单触发时执行槽函数，不明白的可以参见前文：信号与槽
   connect(act1, SIGNAL(triggered()), this, SLOT(open_file_slot()));
 
   // 菜单栏添加子菜单
   menu1->addAction(act1);
-
-  // 第二个菜单：添加二级菜单
-  /// QMenu *menu2 = menuBar()->addMenu(tr("菜单栏2"));
-  /// QAction *act2 = new QAction(QIcon("../Image/act2.png"), tr("一级菜单"),
-  /// this);
-
-  /// QMenu *submenu = new QMenu();
-  /// QAction *subact =
-  ///     new QAction(QIcon("../Image/subact.png"), tr("二级菜单"), this);
-  /// submenu->addAction(subact);
-  /// connect(subact, SIGNAL(triggered()), this, SLOT(subSlot()));
-
-  /// act2->setMenu(submenu);  // 将二级菜单添加到一级菜单上
-  /// menu2->addAction(act2);  // 将一级菜单添加到菜单栏上
 }
 
 void MainWindow::open_file_slot() {
@@ -85,8 +68,12 @@ std::string MainWindow::get_file_name() {
 }
 
 void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
-  ui->tableWidget->setRowCount(vec.size());
+  ui->tableWidget->setRowCount(static_cast<int>(vec.size()));
   ui->tableWidget->setColumnCount(8);
+  ui->tableWidget->setSortingEnabled(true);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
   /// ui->tableWidget->setWindowTitle("QTableWidget & Item");
   /// ui->tableWidget->resize(400, 300);  //设置表格
   QStringList header;
@@ -110,17 +97,18 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
     auto file = std::get<lee::log_info::FILE>(location);
     auto line = std::to_string(std::get<lee::log_info::LINE>(location));
     auto pid = std::to_string(std::get<lee::log_info::PID>(location));
-    ui->tableWidget->setItem(i, 0, new QTableWidgetItem(QString(num.c_str())));
-    ui->tableWidget->setItem(i, 1,
+    int index = static_cast<int>(i);
+    ui->tableWidget->setItem(index, 0, new QTableWidgetItem(QString(num.c_str())));
+    ui->tableWidget->setItem(index, 1,
                              new QTableWidgetItem(QString(time_str.c_str())));
-    ui->tableWidget->setItem(i, 2,
+    ui->tableWidget->setItem(index, 2,
                              new QTableWidgetItem(QString(level.c_str())));
-    ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString(log.c_str())));
-    ui->tableWidget->setItem(i, 4,
+    ui->tableWidget->setItem(index, 3, new QTableWidgetItem(QString(log.c_str())));
+    ui->tableWidget->setItem(index, 4,
                              new QTableWidgetItem(QString(function.c_str())));
-    ui->tableWidget->setItem(i, 5, new QTableWidgetItem(QString(pid.c_str())));
-    ui->tableWidget->setItem(i, 6, new QTableWidgetItem(QString(file.c_str())));
-    ui->tableWidget->setItem(i, 7, new QTableWidgetItem(QString(line.c_str())));
+    ui->tableWidget->setItem(index, 5, new QTableWidgetItem(QString(pid.c_str())));
+    ui->tableWidget->setItem(index, 6, new QTableWidgetItem(QString(file.c_str())));
+    ui->tableWidget->setItem(index, 7, new QTableWidgetItem(QString(line.c_str())));
 
     vec.at(i).second.pos;
     vec.at(i).second.state;
