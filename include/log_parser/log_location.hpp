@@ -47,8 +47,8 @@ class log_location {
     begin = str.find("PID: ");
     begin = str.find(' ', begin) + 1;
     end = str.find(',', begin);
-    if(std::string::npos == end){
-        end = str.find('>', begin);
+    if (std::string::npos == end) {
+      end = str.find('>', begin);
     }
     auto temp = str.substr(begin, end - begin);
     thread_id_ = std::stoull(temp);

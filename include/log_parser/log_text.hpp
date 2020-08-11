@@ -34,9 +34,11 @@ class log_text {
     text_.erase(text_.find_last_not_of(' ') + 1);
     if (text_.size() != 0) {
       lowercase_text_ = text_;
-      std::transform(lowercase_text_.cbegin(), lowercase_text_.cend(),
-                     lowercase_text_.begin(),
-                     [](const char& c) -> char { return static_cast<char>(std::tolower(static_cast<int>(c))); });
+      std::transform(
+          lowercase_text_.cbegin(), lowercase_text_.cend(),
+          lowercase_text_.begin(), [](const char& c) -> char {
+            return static_cast<char>(std::tolower(static_cast<int>(c)));
+          });
     }
   }
   log_text() : log_text("") {}
