@@ -74,7 +74,7 @@ endif(MSVC)
 # 设置GCC最高警告级别
 if ( CMAKE_COMPILER_IS_GNUCC )
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall")
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++2aA")
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++2a")
 endif()
 # 设置MSVC最高警告级别
 if ( MSVC )
