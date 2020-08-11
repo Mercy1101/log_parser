@@ -10,14 +10,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
-  /// QDir::currentPath()
-  /// qApp->applicationDirPath();
-  /// const char* ch;
-  /// QByteArray ba=filename.toLatin1();
-  /// ch=ba.data();
-  /// File * file=fopen(ch,"r");
-  /// fread(myImage,sizeof(unsigned char),515*512,file);
-  /// fclose(file);
   create_menu();
 }
 
@@ -101,8 +93,9 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
     ui->tableWidget->setItem(index, 0, new QTableWidgetItem(QString(num.c_str())));
     ui->tableWidget->setItem(index, 1,
                              new QTableWidgetItem(QString(time_str.c_str())));
-    ui->tableWidget->setItem(index, 2,
-                             new QTableWidgetItem(QString(level.c_str())));
+    auto p_item = new QTableWidgetItem(QString(level.c_str()));
+    p_item->setBackground(get_level_color(level));
+    ui->tableWidget->setItem(index, 2, p_item);
     ui->tableWidget->setItem(index, 3, new QTableWidgetItem(QString(log.c_str())));
     ui->tableWidget->setItem(index, 4,
                              new QTableWidgetItem(QString(function.c_str())));
@@ -113,4 +106,32 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
     vec.at(i).second.pos;
     vec.at(i).second.state;
   }
+}
+
+Qt::GlobalColor MainWindow::get_level_color(const std::string& level){
+auto result = lee::log_level::level_map.find(level);
+if(result != lee::log_level::level_map.end()){
+    if(result->second == lee::log_level::color::red){
+        return Qt::red;
+    }
+    if(result->second == lee::log_level::color::blue){
+        return Qt::blue;
+    }
+    if(result->second == lee::log_level::color::gray){
+        return Qt::gray;
+    }
+    if(result->second == lee::log_level::color::green){
+        return Qt::green;
+    }
+    if(result->second == lee::log_level::color::white){
+        return Qt::white;
+    }
+    if(result->second == lee::log_level::color::yellow){
+        return Qt::yellow;
+    }
+    return Qt::white;
+}
+else {
+    return Qt::white;
+}
 }

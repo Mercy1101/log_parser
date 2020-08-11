@@ -28,6 +28,7 @@ class MainWindow : public QMainWindow {
   std::string get_file_name();
   void add_data_into_table();
   void add_data_into_table(lee::log_view_vec &vec);
+  Qt::GlobalColor get_level_color(const std::string& level);
 };
 
 #endif  // MAINWINDOW_H

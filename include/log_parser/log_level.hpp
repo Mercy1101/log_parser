@@ -24,11 +24,19 @@ inline namespace log_detail {
 /// @date     2020-08-01 17:36:27
 /// @warning  线程不安全
 class log_level {
-  std::unordered_map<std::string, int> level_map{
-      {"trace", 0}, {"debug", 1},    {"info", 2},    {"warn", 3},
-      {"error", 4}, {"critrial", 5}, {"unknow", 100}};
+  public:
+    enum color{
+        gray,
+        white,
+        blue,
+        green,
+        yellow,
+        red,
+    };
+  inline static std::unordered_map<std::string,  color> level_map{
+      {"trace", white}, {"debug", blue},    {"info", green},    {"warn", yellow},
+      {"error", red}, {"critrial", red}, {"unknow", gray}};
 
- public:
   log_level(std::string level) {
     if(level.empty()){
       return;
@@ -43,7 +51,7 @@ class log_level {
       assert(false && "error log level");
     }
   }
-  log_level(const int level) {
+  log_level(const  color level) {
     level_num_ = level;
     for (const auto& element : level_map) {
       if (element.second == level) {
@@ -53,14 +61,14 @@ class log_level {
     }
     assert(false && "error log level");
   }
-  log_level() : log_level(100) {}
+  log_level() : log_level( color::gray) {}
 
-  const int get_level_num() { return level_num_; }
+  const  color get_level_num() { return level_num_; }
   const std::string get_level_str() const { return level_str_; }
 
  private:
   std::string level_str_;
-  int level_num_;
+   color level_num_;
 };
 }  // namespace log_detail
 }  // namespace lee
