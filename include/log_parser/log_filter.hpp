@@ -50,6 +50,11 @@ class log_filter_base {
     return true;
   }
 
+  void clear_condition(){
+    set_sort_cond(SORT_KINDS::TIME);
+    condition_.clear();
+  }
+
   bool find_keyword(lee::highlight_pos& pos, const std::string& key_word,
                     const std::string& log) {
     if (log.find(key_word) != std::string::npos) {
@@ -112,6 +117,8 @@ class log_filter_multi : public log_filter_base {
         if (res) {
           it.second.pos = pos;
           it.second.state = it_cond.second;
+        } else {
+          it.second.state = VISABLE_STATE::HIDDEN;
         }
       }
     }
