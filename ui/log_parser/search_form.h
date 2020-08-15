@@ -7,16 +7,20 @@ namespace Ui {
 class search_form;
 }
 
-class search_form : public QWidget
-{
+class search_form : public QWidget {
   Q_OBJECT
+ signals:
+  void set_search_keyword_sig(const std::string keyword);
 
-public:
+ public:
   explicit search_form(QWidget *parent = nullptr);
   ~search_form();
 
-private:
+ private slots:
+  void on_pushButton_clicked();
+
+ private:
   Ui::search_form *ui;
 };
 
-#endif // SEARCH_FORM_H
+#endif  // SEARCH_FORM_H

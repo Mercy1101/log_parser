@@ -25,13 +25,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        search_form.cpp
 
 INCLUDEPATH += ../../include/
 
 HEADERS += \
-        mainwindow.h \
+        mainwindow.h \ \
+  search_form.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        search_form.ui
 
