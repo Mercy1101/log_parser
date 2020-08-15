@@ -2,8 +2,11 @@ doc/
 bin/
 build/
 tools/reports/
-ui/build-log_parser-Desktop_Qt_5_10_0_MinGW_32bit-Debug
-ui/build-log_parser-Desktop_Qt_5_15_0_GCC_64bit-Debug
+ui/build*
 *.user
 *.autosave
 html/
+*.o
+ui/log/日志/log-10/detail.1.log
+ui/log/日志/log-21.rar
+ui/log_parser/log_parser.pro.user.70efea4

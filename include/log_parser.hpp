@@ -83,10 +83,64 @@ class log_parser {
   /// @author   Lijiancong, pipinstall@163.com
   /// @date     2020-07-23 19:13:51
   /// @warning  线程不安全
-  log_view_vec find(cond_vec& condition_vec) {
+  log_view_vec& find_log(cond_vec& condition_vec) {
+    if(filter_ != nullptr){
+      delete filter_;
+    }
+    filter_ = new lee::log_filter_multi();
     filter_->set_condition( condition_vec);
     filter_->filter(log_view_);
     return log_view_;
+  }
+
+  log_view_vec& find_level(cond_vec& condition_vec){
+    if(filter_ != nullptr){
+      delete filter_;
+    }
+    filter_ = new lee::log_filter_level();
+    filter_->set_condition(condition_vec);
+    filter_->filter(log_view_);
+    return log_view_;
+  }
+
+  log_view_vec& hidden_log(cond_vec& condition_vec){
+    if(filter_ != nullptr){
+      delete filter_;
+    }
+    filter_ = new lee::log_filter_hidden();
+    filter_->set_condition(condition_vec);
+    filter_->filter(log_view_);
+    return log_view_;
+  }
+
+  log_view_vec& find_log_ignorecase(cond_vec& condition_vec) {
+    if(filter_ != nullptr){
+      delete filter_;
+    }
+    filter_ = new lee::log_filter_ignorecase();
+    filter_->set_condition(condition_vec);
+    filter_->filter(log_view_);
+    return log_view_;
+  }
+
+  log_view_vec& find_log_wholeword(cond_vec& condition_vec) {
+    if(filter_ != nullptr){
+      delete filter_;
+    }
+    filter_ = new lee::log_filter_wholeword();
+    filter_->set_condition(condition_vec);
+    filter_->filter(log_view_);
+    return log_view_;
+  }
+
+  void clear_condition(){
+    if(filter_ != nullptr){
+    filter_->clear_condition();
+    for(auto& it : log_view_){
+      it.second.pos = std::make_pair(0,0);
+      it.second.state = VISABLE_STATE::DEFAULT;
+    }
+    }
   }
 
  private:

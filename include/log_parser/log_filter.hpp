@@ -18,6 +18,7 @@
 #include <utility>
 #include <vector>
 #include <algorithm>
+#include <cctype>
 
 #include "log_parser/data_struct_define.hpp"
 #include "log_parser/log_info.hpp"
@@ -45,9 +46,14 @@ class log_filter_base {
     if (vec.empty()) {
       return false;
     }
-    condition_.clear();
+    /// condition_.clear();
     condition_ = vec;
     return true;
+  }
+
+  void clear_condition(){
+    set_sort_cond(SORT_KINDS::TIME);
+    condition_.clear();
   }
 
   bool find_keyword(lee::highlight_pos& pos, const std::string& key_word,
@@ -112,6 +118,104 @@ class log_filter_multi : public log_filter_base {
         if (res) {
           it.second.pos = pos;
           it.second.state = it_cond.second;
+        } else {
+          /// it.second.state = VISABLE_STATE::HIDDEN;
+        }
+      }
+    }
+  }
+};
+
+class log_filter_ignorecase : public log_filter_base {
+ public:
+  log_filter_ignorecase() = default;
+
+  void filter(log_view_vec& vec) override {
+    for(auto keyword = condition_.begin(); keyword != condition_.end(); ++keyword){
+      std::transform(
+          keyword->first.begin(), keyword->first.end(),
+          keyword->first.begin(), [](const char& c) -> char {
+            return static_cast<char>(std::tolower(static_cast<int>(c)));
+          });
+    }
+    for (auto& it : vec) {
+      lee::highlight_pos pos;
+      for (auto& it_cond : condition_) {
+      auto keyword = it_cond.first;
+      auto log = it.first.get().get_log_lowercase();
+        auto res = find_keyword(pos , keyword, log);
+        if (res) {
+          it.second.pos = pos;
+          it.second.state = it_cond.second;
+        } else {
+          /// it.second.state = VISABLE_STATE::HIDDEN;
+        }
+      }
+    }
+  }
+};
+
+class log_filter_wholeword: public log_filter_base {
+ public:
+  log_filter_wholeword() = default;
+
+  void filter(log_view_vec& vec) override {
+    for (auto& it : vec) {
+      lee::highlight_pos pos;
+      for (auto& it_cond : condition_) {
+      auto keyword = it_cond.first;
+      auto log = it.first.get().get_log_lowercase();
+        auto res = find_keyword(pos , keyword, log);
+        if (res) {
+          bool first_bool = pos.first == 0 || !std::isalpha(it.first.get().get_log().at(pos.first-1));
+          bool second_bool = pos.second == it.first.get().get_log().size()-1 || !std::isalpha(it.first.get().get_log().at(pos.second+1));
+          if(first_bool && second_bool){
+          it.second.pos = pos;
+          it.second.state = it_cond.second;
+          }
+        } else {
+          /// it.second.state = VISABLE_STATE::HIDDEN;
+        }
+      }
+    }
+  }
+};
+
+
+class log_filter_level : public log_filter_base {
+ public:
+  log_filter_level() = default;
+
+  void filter(log_view_vec& vec) override {
+    for (auto& it : vec) {
+      lee::highlight_pos pos;
+      for (auto& it_cond : condition_) {
+        auto res = find_keyword(pos ,it_cond.first, it.first.get().get_level());
+        if (res) {
+          it.second.pos = pos;
+          it.second.state = it_cond.second;
+        } else {
+          /// it.second.state = VISABLE_STATE::HIDDEN;
+        }
+      }
+    }
+  }
+};
+
+class log_filter_hidden : public log_filter_base {
+ public:
+  log_filter_hidden() = default;
+
+  void filter(log_view_vec& vec) override {
+    for (auto& it : vec) {
+      lee::highlight_pos pos;
+      for (auto& it_cond : condition_) {
+        auto res = find_keyword(pos ,it_cond.first, it.first.get().get_level());
+        if (res) {
+          it.second.pos = pos;
+          it.second.state = VISABLE_STATE::HIDDEN;
+        } else {
+          /// it.second.state = it.second.state;
         }
       }
     }
