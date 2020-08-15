@@ -47,7 +47,7 @@ using highlight_pos = std::pair<size_t, size_t>;
 struct log_info_state {
   log_info_state(const int count):count_(count){}
   int count_ = 0;
-  VISABLE_STATE state = VISABLE_STATE::DEFAULT;
+  VISABLE_STATE state = VISABLE_STATE::VISABLE;
   highlight_pos pos{0, 0};
 };
 
