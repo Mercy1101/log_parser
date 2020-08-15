@@ -89,6 +89,14 @@ class log_parser {
     return log_view_;
   }
 
+  void clear_condition(){
+    filter_->clear_condition();
+    for(auto& it : log_view_){
+      it.second.pos = std::make_pair(0,0);
+      it.second.state = VISABLE_STATE::DEFAULT;
+    }
+  }
+
  private:
   std::vector<std::string> file_data_;  ///< 用于存放文件内容
   std::vector<log_info> log_info_;  ///< 用于存放解析好的日志内容
