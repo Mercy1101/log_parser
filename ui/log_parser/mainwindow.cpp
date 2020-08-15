@@ -27,6 +27,11 @@ void MainWindow::create_menu() {
   act2->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
   connect(act2, SIGNAL(triggered()), this, SLOT(add_condtion_slot()));
   menu2->addAction(act2);
+
+  QAction *act3 = new QAction(tr("Clear filter"), this);
+  act3->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+  connect(act3, SIGNAL(triggered()), this, SLOT(clear_filter_slot()));
+  menu2->addAction(act3);
 }
 
 void MainWindow::open_file_slot() {
@@ -176,15 +181,59 @@ void MainWindow::create_search_panel() {
   search_form_ = new search_form();
 
   connect(search_form_, SIGNAL(set_search_keyword_sig(const std::string)), this,
-          SLOT(search_keyword_slot(const std::string)));
+          SLOT(search_log_slot(const std::string)));
+  connect(search_form_, SIGNAL(set_level_keyword_sig(const std::string)), this,
+          SLOT(search_level_slot(const std::string)));
+  connect(search_form_, SIGNAL(set_hidden_sig(const std::string)), this,
+          SLOT(hidden_log_slot(const std::string)));
+  connect(search_form_,
+          SIGNAL(set_search_keyword_ignorecase_sig(const std::string)), this,
+          SLOT(search_log_ignorecase_slot(const std::string)));
+  connect(search_form_, SIGNAL(set_search_whole_sig(const std::string)), this,
+          SLOT(search_log_wholeword_slot(const std::string)));
   search_form_->show();
 }
 
 void MainWindow::add_condtion_slot() { create_search_panel(); }
 
-void MainWindow::search_keyword_slot(const std::string key_word) {
+void MainWindow::search_log_slot(const std::string key_word) {
   lee::cond_vec vec;
   vec.push_back({key_word, lee::VISABLE_STATE::HIGHLIGHT});
-  log_->find(vec);
+  log_->find_log(vec);
   add_data_into_table(log_->get_log_view_vec());
 }
+
+void MainWindow::search_level_slot(const std::string level) {
+  lee::cond_vec vec;
+  vec.push_back({level, lee::VISABLE_STATE::HIGHLIGHT});
+  log_->find_level(vec);
+  add_data_into_table(log_->get_log_view_vec());
+}
+
+void MainWindow::hidden_log_slot(const std::string hidden_keyword) {
+  lee::cond_vec vec;
+  vec.push_back({hidden_keyword, lee::VISABLE_STATE::HIGHLIGHT});
+  log_->hidden_log(vec);
+  add_data_into_table(log_->get_log_view_vec());
+}
+
+void MainWindow::search_log_ignorecase_slot(const std::string log) {
+  lee::cond_vec vec;
+  vec.push_back({log, lee::VISABLE_STATE::HIGHLIGHT});
+  log_->find_log_ignorecase(vec);
+  add_data_into_table(log_->get_log_view_vec());
+}
+
+void MainWindow::search_log_wholeword_slot(const std::string whole_word) {
+  lee::cond_vec vec;
+  vec.push_back({whole_word, lee::VISABLE_STATE::HIGHLIGHT});
+  log_->find_log_wholeword(vec);
+  add_data_into_table(log_->get_log_view_vec());
+}
+
+void MainWindow::clear_filter() {
+  log_->clear_condition();
+  add_data_into_table(log_->get_log_view_vec());
+}
+
+void MainWindow::clear_filter_slot() { clear_filter(); }

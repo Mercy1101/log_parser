@@ -14,3 +14,27 @@ void search_form::on_pushButton_clicked() {
   emit set_search_keyword_sig(keyword);
   this->close();
 }
+
+void search_form::on_search_level_clicked() {
+  auto keyword = this->ui->search_text->text().toStdString();
+  emit set_level_keyword_sig(keyword);
+  this->close();
+}
+
+void search_form::on_hide_btn_clicked() {
+  auto keyword = this->ui->search_text->text().toStdString();
+  emit set_hidden_sig(keyword);
+  this->close();
+}
+
+void search_form::on_search_ignorecase_clicked() {
+  auto keyword = this->ui->search_text->text().toStdString();
+  emit set_search_keyword_ignorecase_sig(keyword);
+  this->close();
+}
+
+void search_form::on_search_whole_clicked() {
+  auto keyword = this->ui->search_text->text().toStdString();
+  emit set_search_whole_sig(keyword);
+  this->close();
+}

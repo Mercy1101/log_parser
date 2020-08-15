@@ -18,7 +18,12 @@ class MainWindow : public QMainWindow {
  public slots:
   void open_file_slot();
   void add_condtion_slot();
-  void search_keyword_slot(const std::string);
+  void search_log_slot(const std::string keyword);
+  void search_level_slot(const std::string level);
+  void hidden_log_slot(const std::string hidden_keyword);
+  void clear_filter_slot();
+  void search_log_ignorecase_slot(const std::string log);
+  void search_log_wholeword_slot(const std::string whole_word);
 
  public:
   explicit MainWindow(QWidget *parent = nullptr);
@@ -34,6 +39,7 @@ class MainWindow : public QMainWindow {
   void add_data_into_table(lee::log_view_vec &vec);
   Qt::GlobalColor get_level_color(const std::string &level);
   void create_search_panel();
+  void clear_filter();
 };
 
 #endif  // MAINWINDOW_H

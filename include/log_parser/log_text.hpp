@@ -43,6 +43,7 @@ class log_text {
   }
   log_text() : log_text("") {}
   std::string get() const { return text_; }
+  std::string get_lowercase() const { return lowercase_text_; }
 
  private:
   std::string text_;
