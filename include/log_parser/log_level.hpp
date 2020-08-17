@@ -33,7 +33,8 @@ class log_level {
     yellow,
     red,
   };
-  inline static std::unordered_map<std::string, color> level_map{
+  using level = std::unordered_map<std::string, color>;
+  level level_map={
       {"trace", white}, {"debug", blue},   {"info", green}, {"warn", yellow},
       {"error", red},   {"critrial", red}, {"unknow", gray}};
 
@@ -65,6 +66,7 @@ class log_level {
 
   const color get_level_num() { return level_num_; }
   const std::string get_level_str() const { return level_str_; }
+  const level get_level_map(){return level_map;}
 
  private:
   std::string level_str_;

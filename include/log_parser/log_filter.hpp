@@ -13,7 +13,7 @@
 #define INCLUDE_LOG_FILTER_HPP_
 
 #include <functional>
-#include <optional>
+/// #include <optional>
 #include <string>
 #include <utility>
 #include <vector>

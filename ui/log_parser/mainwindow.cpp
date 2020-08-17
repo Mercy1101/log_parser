@@ -9,7 +9,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-
   create_menu();
 }
 
@@ -65,6 +64,8 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
       QHeaderView::Stretch);
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
       0, QHeaderView::ResizeToContents);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+      1, QHeaderView::ResizeToContents);
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
       3, QHeaderView::ResizeToContents);
   /// ui->tableWidget->setWindowTitle("QTableWidget & Item");
@@ -148,8 +149,10 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
 }
 
 Qt::GlobalColor MainWindow::get_level_color(const std::string &level) {
-  auto result = lee::log_level::level_map.find(level);
-  if (result != lee::log_level::level_map.end()) {
+    lee::log_level empty_level;
+    auto map = empty_level.get_level_map();
+    auto result = map.find(level);
+    if (result != map.end()) {
     if (result->second == lee::log_level::color::red) {
       return Qt::red;
     }

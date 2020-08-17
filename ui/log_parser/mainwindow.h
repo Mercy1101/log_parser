@@ -32,7 +32,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow *ui;
   lee::log_parser *log_ = nullptr;
-  search_form *search_form_;
+  search_form *search_form_ = nullptr;
   void create_menu();
   std::string get_file_name();
   void add_data_into_table();
