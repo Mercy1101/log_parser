@@ -35,18 +35,32 @@ class log_info {
   log_info(const std::string& str) {
     auto begin = str.find_first_of('[');
     auto end = str.find_first_of(']');
-    log_time t(str.substr(begin, end - begin + 1));
-    time_ = t;
+    if(begin != std::string::npos){
+      log_time t(str.substr(begin, end - begin + 1));
+      time_ = t;
+    } else{
+      time_ = log_time();
+    }
 
     begin = str.find_first_of('[', end + 1);
-    end = str.find_first_of(']', begin);
-    log_level level(str.substr(begin, end - begin + 1));
-    level_ = level;
+    if(begin != std::string::npos) {
+      end = str.find_first_of(']', begin);
+      log_level level(str.substr(begin, end - begin + 1));
+      level_ = level;
+    } else {
+      level_= log_level();
+    }
 
     begin = end + 1;
     end = str.find_first_of('<', end + 1);
-    log_text text(str.substr(begin, end - begin));
-    text_ = text;
+    if(end != std::string::npos){
+      log_text text(str.substr(begin, end - begin));
+      text_ = text;
+    }
+    else{
+      log_text text(str.substr(begin));
+      text_ = text;
+    }
 
     begin = end + 1;
     log_location location(str.substr(begin));
@@ -65,7 +79,7 @@ class log_info {
     LINE = 2,
     PID = 3,
   };
-  using location_tuple = std::tuple<std::string, std::string, int, unsigned long long>;
+  using location_tuple = std::tuple<std::string, std::string, unsigned long long, unsigned long long>;
   location_tuple get_location() {
     auto func = location_.get_function_name();
     auto file = location_.get_file_name();

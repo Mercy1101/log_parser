@@ -45,8 +45,8 @@ using cond_vec = std::vector<cond>;
 /// 用于保存高亮文本的坐标
 using highlight_pos = std::pair<size_t, size_t>;
 struct log_info_state {
-  log_info_state(const int count):count_(count){}
-  int count_ = 0;
+  log_info_state(const unsigned long long count):count_(count){}
+  unsigned long long count_ = 0;
   VISABLE_STATE state = VISABLE_STATE::DEFAULT;
   highlight_pos pos{0, 0};
 };

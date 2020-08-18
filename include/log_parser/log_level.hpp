@@ -64,9 +64,9 @@ class log_level {
   }
   log_level() : log_level(color::gray) {}
 
-  const color get_level_num() { return level_num_; }
+  const color get_level_num() const { return level_num_; }
   const std::string get_level_str() const { return level_str_; }
-  const level get_level_map(){return level_map;}
+  const level get_level_map() const {return level_map;}
 
  private:
   std::string level_str_;

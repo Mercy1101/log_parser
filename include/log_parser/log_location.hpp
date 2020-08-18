@@ -30,40 +30,58 @@ class log_location {
       return;
     }
     auto begin = str.find("Function: ");
-    begin = str.find(' ', begin) + 1;
-    auto end = str.find(',', begin);
-    function_name_ = str.substr(begin, end - begin);
+    auto end = begin;
+    if(begin != std::string::npos){
+        begin = str.find(' ', begin) + 1;
+        end = str.find(',', begin);
+        function_name_ = str.substr(begin, end - begin);
+    } else {
+      function_name_ = "unkonw";
+    }
 
     begin = str.find("File: ");
-    begin = str.find(' ', begin) + 1;
-    end = str.find(',', begin);
-    file_name_ = str.substr(begin, end - begin);
+    if(begin != std::string::npos){
+      begin = str.find(' ', begin) + 1;
+      end = str.find(',', begin);
+      file_name_ = str.substr(begin, end - begin);
+    } else {
+      file_name_ = "unkonw";
+    }
 
     begin = str.find("Line: ");
-    begin = str.find(' ', begin) + 1;
-    end = str.find(',', begin);
-    line_ = std::stoi(str.substr(begin, end - begin));
+    if(begin != std::string::npos){
+       begin = str.find(' ', begin) + 1;
+       end = str.find(',', begin);
+       line_ = std::stoull(str.substr(begin, end - begin));
+    } else {
+      line_ = 0;
+    }
 
     begin = str.find("PID: ");
-    begin = str.find(' ', begin) + 1;
-    end = str.find(',', begin);
-    if (std::string::npos == end) {
-      end = str.find('>', begin);
+    if(begin != std::string::npos){
+       begin = str.find(' ', begin) + 1;
+       end = str.find(',', begin);
+       if (std::string::npos == end) {
+         end = str.find('>', begin);
+       }
+       auto temp = str.substr(begin, end - begin);
+       thread_id_ = std::stoull(temp);
+    } else {
+      thread_id_ = 0;
     }
-    auto temp = str.substr(begin, end - begin);
-    thread_id_ = std::stoull(temp);
   }
+
   log_location() : log_location("") {}
 
-  const std::string get_file_name() { return file_name_; }
-  const int get_file_line() { return line_; }
-  const unsigned long long get_thread_id() { return thread_id_; }
-  const std::string get_function_name() { return function_name_; }
+  const std::string get_file_name() const { return file_name_; }
+  const unsigned long long get_file_line() const { return line_; }
+  const unsigned long long get_thread_id() const { return thread_id_; }
+  const std::string get_function_name() const { return function_name_; }
 
  private:
   std::string function_name_;
   std::string file_name_;
-  int line_ = 0;
+  unsigned long long line_ = 0;
   unsigned long long thread_id_ = 0;
 };
 }  // namespace log_detail

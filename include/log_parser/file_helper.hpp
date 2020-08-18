@@ -61,7 +61,7 @@ class file_helper {
   /// @warning  线程不安全
   static void filter(std::vector<std::string>* vec) {
     /// 正则匹配 \[.*\].*\[.*\].*<.*>
-    std::regex e("\\[.*\\].*\\[.*\\].*<.*>");
+    std::regex e("\\[.*\\].*\\[.*\\].*");
     vec->erase(std::remove_if(vec->begin(), vec->end(),
                               [&](const std::string& it) {
                                 return !std::regex_match(it, e);

@@ -60,7 +60,7 @@ class log_parser {
 
     lee::file_helper::filter(&file_data_);
     log_info_.reserve(file_data_.size());
-    int count = 0;
+    unsigned long long count = 1;
     for (const auto& it : file_data_) {
       log_info info(it);
       log_info_state state(count);

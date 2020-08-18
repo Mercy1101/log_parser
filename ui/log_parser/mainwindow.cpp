@@ -38,6 +38,9 @@ void MainWindow::open_file_slot() {
     delete log_;
   }
   auto file_name = get_file_name();
+  if (file_name.empty()) {
+    return;
+  }
   log_ = new lee::log_parser(file_name);
   add_data_into_table(log_->get_log_view_vec());
 }
@@ -49,6 +52,9 @@ std::string MainWindow::get_file_name() {
   QString open_folder = "./";
   auto file_full = QFileDialog::getOpenFileName(
       this, tr("Open Log File"), open_folder, "log files(*.log *.txt)");
+  if (file_full == "") {
+    return "";
+  }
   QFileInfo fi = QFileInfo(file_full);
   auto file_name = fi.fileName();
   auto file_path = fi.absolutePath();
@@ -59,7 +65,7 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
   ui->tableWidget->clear();
   ui->tableWidget->setRowCount(static_cast<int>(vec.size()));
   ui->tableWidget->setColumnCount(8);
-  ui->tableWidget->setSortingEnabled(true);
+  /// ui->tableWidget->setSortingEnabled(true);
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
       QHeaderView::Stretch);
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
@@ -67,7 +73,11 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
       1, QHeaderView::ResizeToContents);
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+      2, QHeaderView::ResizeToContents);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(
       3, QHeaderView::ResizeToContents);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+      6, QHeaderView::ResizeToContents);
   /// ui->tableWidget->setWindowTitle("QTableWidget & Item");
   /// ui->tableWidget->resize(400, 300);  //设置表格
   QStringList header;
@@ -200,6 +210,9 @@ void MainWindow::create_search_panel() {
 void MainWindow::add_condtion_slot() { create_search_panel(); }
 
 void MainWindow::search_log_slot(const std::string key_word) {
+  if (log_ == nullptr) {
+    return;
+  }
   lee::cond_vec vec;
   vec.push_back({key_word, lee::VISABLE_STATE::HIGHLIGHT});
   log_->find_log(vec);
@@ -207,6 +220,9 @@ void MainWindow::search_log_slot(const std::string key_word) {
 }
 
 void MainWindow::search_level_slot(const std::string level) {
+  if (log_ == nullptr) {
+    return;
+  }
   lee::cond_vec vec;
   vec.push_back({level, lee::VISABLE_STATE::HIGHLIGHT});
   log_->find_level(vec);
@@ -214,6 +230,9 @@ void MainWindow::search_level_slot(const std::string level) {
 }
 
 void MainWindow::hidden_log_slot(const std::string hidden_keyword) {
+  if (log_ == nullptr) {
+    return;
+  }
   lee::cond_vec vec;
   vec.push_back({hidden_keyword, lee::VISABLE_STATE::HIGHLIGHT});
   log_->hidden_log(vec);
@@ -221,6 +240,9 @@ void MainWindow::hidden_log_slot(const std::string hidden_keyword) {
 }
 
 void MainWindow::search_log_ignorecase_slot(const std::string log) {
+  if (log_ == nullptr) {
+    return;
+  }
   lee::cond_vec vec;
   vec.push_back({log, lee::VISABLE_STATE::HIGHLIGHT});
   log_->find_log_ignorecase(vec);
@@ -228,6 +250,9 @@ void MainWindow::search_log_ignorecase_slot(const std::string log) {
 }
 
 void MainWindow::search_log_wholeword_slot(const std::string whole_word) {
+  if (log_ == nullptr) {
+    return;
+  }
   lee::cond_vec vec;
   vec.push_back({whole_word, lee::VISABLE_STATE::HIGHLIGHT});
   log_->find_log_wholeword(vec);
@@ -235,6 +260,9 @@ void MainWindow::search_log_wholeword_slot(const std::string whole_word) {
 }
 
 void MainWindow::clear_filter() {
+  if (log_ == nullptr) {
+    return;
+  }
   log_->clear_condition();
   add_data_into_table(log_->get_log_view_vec());
 }

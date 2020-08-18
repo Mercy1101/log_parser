@@ -183,7 +183,7 @@ class log_time {
   inline time_t get_specific_timestamp(const int year, const int mouth,
                                        const int day, const int hour,
                                        const int min, const int sec) {
-    tm time = {0};
+    tm time;
     time.tm_year = year - 1900;
     time.tm_mon = mouth - 1;
     time.tm_mday = day;
