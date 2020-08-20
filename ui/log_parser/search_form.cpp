@@ -5,6 +5,8 @@
 search_form::search_form(QWidget *parent)
     : QWidget(parent), ui(new Ui::search_form) {
   ui->setupUi(this);
+  QWidget::setTabOrder(this->ui->search_text, this->ui->pushButton);
+  QWidget::setTabOrder(this->ui->pushButton, this->ui->search_ignorecase);
 }
 
 search_form::~search_form() { delete ui; }

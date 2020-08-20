@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMimeData>
+#include <QTextStream>
+#include <QUrl>
 #include <string>
 
 #include "log_parser.hpp"
@@ -28,6 +31,10 @@ class MainWindow : public QMainWindow {
  public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+
+ protected:
+  void dragEnterEvent(QDragEnterEvent *event);
+  void dropEvent(QDropEvent *event);
 
  private:
   Ui::MainWindow *ui;

@@ -24,9 +24,7 @@ class search_form : public QWidget {
   void on_pushButton_clicked();
   void on_search_level_clicked();
   void on_hide_btn_clicked();
-
   void on_search_ignorecase_clicked();
-
   void on_search_whole_clicked();
 
  private:

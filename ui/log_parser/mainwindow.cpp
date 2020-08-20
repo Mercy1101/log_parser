@@ -1,7 +1,12 @@
 #include "mainwindow.h"
 
 #include <QDebug>
+#include <QDragEnterEvent>
+#include <QFile>
 #include <QFileDialog>
+#include <QMimeData>
+#include <QTextStream>
+#include <QUrl>
 #include <iostream>
 
 #include "ui_mainwindow.h"
@@ -10,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   create_menu();
+  ui->tableWidget->setAcceptDrops(false);
+  this->setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -75,9 +82,13 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
       2, QHeaderView::ResizeToContents);
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
-      3, QHeaderView::ResizeToContents);
+      4, QHeaderView::ResizeToContents);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+      5, QHeaderView::ResizeToContents);
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(
       6, QHeaderView::ResizeToContents);
+  ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+      7, QHeaderView::ResizeToContents);
   /// ui->tableWidget->setWindowTitle("QTableWidget & Item");
   /// ui->tableWidget->resize(400, 300);  //设置表格
   QStringList header;
@@ -159,10 +170,10 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
 }
 
 Qt::GlobalColor MainWindow::get_level_color(const std::string &level) {
-    lee::log_level empty_level;
-    auto map = empty_level.get_level_map();
-    auto result = map.find(level);
-    if (result != map.end()) {
+  lee::log_level empty_level;
+  auto map = empty_level.get_level_map();
+  auto result = map.find(level);
+  if (result != map.end()) {
     if (result->second == lee::log_level::color::red) {
       return Qt::red;
     }
@@ -205,6 +216,7 @@ void MainWindow::create_search_panel() {
   connect(search_form_, SIGNAL(set_search_whole_sig(const std::string)), this,
           SLOT(search_log_wholeword_slot(const std::string)));
   search_form_->show();
+  search_form_->setFocus();
 }
 
 void MainWindow::add_condtion_slot() { create_search_panel(); }
@@ -268,3 +280,31 @@ void MainWindow::clear_filter() {
 }
 
 void MainWindow::clear_filter_slot() { clear_filter(); }
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event) {
+  if (event->mimeData()->hasUrls()) {
+    event->acceptProposedAction();
+  } else {
+    event->ignore();
+  }
+}
+void MainWindow::dropEvent(QDropEvent *event) {
+  auto mine_data = event->mimeData();
+  if (mine_data->hasUrls()) {
+    QList<QUrl> urlList = mine_data->urls();
+    if (urlList.isEmpty()) {
+      return;
+    }
+    QString fileName = urlList.at(0).toLocalFile();
+    if (fileName.isEmpty()) {
+      return;
+    } else {
+      if (log_ != nullptr) {
+        delete log_;
+        log_ = nullptr;
+      }
+      log_ = new lee::log_parser(fileName.toStdString());
+      add_data_into_table(log_->get_log_view_vec());
+    }
+  }
+}
