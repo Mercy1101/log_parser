@@ -210,7 +210,7 @@ class log_filter_hidden : public log_filter_base {
     for (auto& it : vec) {
       lee::highlight_pos pos;
       for (auto& it_cond : condition_) {
-        auto res = find_keyword(pos ,it_cond.first, it.first.get().get_level());
+        auto res = find_keyword(pos ,it_cond.first, it.first.get().get_log());
         if (res) {
           it.second.pos = pos;
           it.second.state = VISABLE_STATE::HIDDEN;

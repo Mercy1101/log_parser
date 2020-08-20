@@ -113,13 +113,18 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
     auto line = std::to_string(std::get<lee::log_info::LINE>(location));
     auto pid = std::to_string(std::get<lee::log_info::PID>(location));
     int index = static_cast<int>(i);
-    if (lee::VISABLE_STATE::VISABLE <= vec.at(i).second.state) {
+    if (lee::VISABLE_STATE::HIDDEN >= vec.at(i).second.state) {
+      continue;
+    } else if (lee::VISABLE_STATE::VISABLE <= vec.at(i).second.state) {
       ui->tableWidget->setItem(index, 0,
                                new QTableWidgetItem(QString(num.c_str())));
       ui->tableWidget->setItem(index, 1,
                                new QTableWidgetItem(QString(time_str.c_str())));
       auto p_item = new QTableWidgetItem(QString(level.c_str()));
       p_item->setBackground(get_level_color(level));
+      if (level == "debug") {
+        p_item->setForeground(Qt::white);
+      }
       ui->tableWidget->setItem(index, 2, p_item);
       ui->tableWidget->setItem(index, 3,
                                new QTableWidgetItem(QString(log.c_str())));
@@ -135,35 +140,35 @@ void MainWindow::add_data_into_table(lee::log_view_vec &vec) {
       vec.at(i).second.pos;
     } else {
       auto item_num = new QTableWidgetItem(QString(num.c_str()));
-      item_num->setBackground(Qt::gray);
+      item_num->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 0, item_num);
 
       auto item_time = new QTableWidgetItem(QString(time_str.c_str()));
-      item_time->setBackground(Qt::gray);
+      item_time->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 1, item_time);
 
       auto item_level = new QTableWidgetItem(QString(level.c_str()));
-      item_level->setBackground(Qt::gray);
+      item_level->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 2, item_level);
 
       auto item_log = new QTableWidgetItem(QString(log.c_str()));
-      item_log->setBackground(Qt::gray);
+      item_log->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 3, item_log);
 
       auto item_func = new QTableWidgetItem(QString(function.c_str()));
-      item_func->setBackground(Qt::gray);
+      item_func->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 4, item_func);
 
       auto item_pid = new QTableWidgetItem(QString(pid.c_str()));
-      item_pid->setBackground(Qt::gray);
+      item_pid->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 5, item_pid);
 
       auto item_file = new QTableWidgetItem(QString(file.c_str()));
-      item_file->setBackground(Qt::gray);
+      item_file->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 6, item_file);
 
       auto item_line = new QTableWidgetItem(QString(line.c_str()));
-      item_line->setBackground(Qt::gray);
+      item_line->setBackground(Qt::lightGray);
       ui->tableWidget->setItem(index, 7, item_line);
     }
   }
@@ -216,7 +221,6 @@ void MainWindow::create_search_panel() {
   connect(search_form_, SIGNAL(set_search_whole_sig(const std::string)), this,
           SLOT(search_log_wholeword_slot(const std::string)));
   search_form_->show();
-  search_form_->setFocus();
 }
 
 void MainWindow::add_condtion_slot() { create_search_panel(); }
